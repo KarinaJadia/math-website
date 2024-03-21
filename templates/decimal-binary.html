@@ -56,6 +56,12 @@
                 document.getElementById("result").innerHTML = res;
                 return 0;
             }
+            function handleKeyPress(event, functionName) {
+                if (event.key === "Enter") {
+                    window[functionName](); 
+                    return 0;
+                }
+            }
         </script>
         <link rel="stylesheet" href="index.css">
         <style>
@@ -142,10 +148,10 @@
                 <h1>Decimal/Binary Calculator</h1>
                 <div class = 'inputs'>
                     <label for="dec">decimal to binary:</label>
-                    <input type="text" id="dec" name="dec">
+                    <input onkeypress="handleKeyPress(event, 'calculateToBinary')" type="text" id="dec" name="dec">
                     <button onclick="calculateToBinary()" class="button">calculate</button><br><br>
                     <label for="bin">binary to decimal:</label>
-                    <input type="text" id="bin" name="bin">
+                    <input onkeypress="handleKeyPress(event, 'calculateToDecimal')" type="text" id="bin" name="bin">
                     <button onclick="calculateToDecimal()" class="button">calculate</button>
                 </div>
             </div>

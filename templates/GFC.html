@@ -36,6 +36,12 @@
                 document.getElementById("result").innerHTML = 'no common factors';
                 return 0;
             }
+            function handleKeyPress(event, functionName) {
+                if (event.key === "Enter") {
+                    window[functionName](); 
+                    return 0;
+                }
+            }
         </script>
         <link rel="stylesheet" href="index.css">
             <!-- links css so I can use it -->
@@ -121,7 +127,7 @@
                 <h1>Greatest Common Factor</h1>
                 <div class = 'inputs'>
                     <label for="dec">list all numbers (separated by space):</label>
-                    <input type="text" id="inp" name="inp">
+                    <input onkeypress="handleKeyPress(event, 'greatest')" type="text" id="inp" name="inp">
                     <button onclick="greatest()" class="button">calculate</button><br>
                 </div>
             </div>
