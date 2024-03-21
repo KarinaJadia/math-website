@@ -18,16 +18,16 @@
                     while (twoscomp < dec) {
                         twoscomp = twoscomp * twoscomp;
                     }
-                    if (dec == twoscomp) {
+                    if (dec == twoscomp) { // specifically for 2^x values since they work special
                         dec = dec;
                         signedbit++;
                     } else {
-                        dec = twoscomp - dec
+                        dec = twoscomp - dec // formula for the number to calculate to get two's complement
                     }
                 }
                 let res = '';
                 let x = 0;
-                while (dec != 0) {
+                while (dec != 0) { // actual binary calculations
                     x = dec % 2;
                     dec = Math.floor(dec/2);
                     res = x.toString() + res;
