@@ -10,10 +10,6 @@ def main():
 def decimal_binary():
     return render_template('decimal-binary.html', static_url_path='/static')
 
-@app.route("/IEEE", endpoint='IEEE')
-def decimal_binary():
-    return render_template('IEEE.html', static_url_path='/static')
-
 @app.route("/GFC", endpoint='GFC')
 def GFC():
     return render_template('GFC.html', static_url_path='/static')
