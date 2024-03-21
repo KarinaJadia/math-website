@@ -21,6 +21,8 @@
                     if (dec == twoscomp) { // specifically for 2^x values since they work special
                         dec = dec;
                         signedbit++;
+                    } else if (dec + 1 == twoscomp) { // for 4 bits that are all 1 unsigned (like 15 = 1111)
+                        dec = twoscomp * twoscomp - dec;
                     } else {
                         dec = twoscomp - dec // formula for the number to calculate to get two's complement
                     }
