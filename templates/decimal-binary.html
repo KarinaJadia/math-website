@@ -10,6 +10,21 @@
                     return 0;
                 }
                 dec = parseInt(dec);
+
+                let twoscomp = 2; // handles negative numbers
+                let signedbit = 0;
+                if (dec < 0) {
+                    dec = Math.abs(dec);
+                    while (twoscomp < dec) {
+                        twoscomp = twoscomp * twoscomp;
+                    }
+                    if (dec == twoscomp) {
+                        dec = dec;
+                        signedbit++;
+                    } else {
+                        dec = twoscomp - dec
+                    }
+                }
                 let res = '';
                 let x = 0;
                 while (dec != 0) {
@@ -21,7 +36,7 @@
                     }
                 }
                 while (res.replaceAll(' ','').length % 4 != 0) { // makes sure it has 4x bits
-                    res = '0' + res;
+                    res = signedbit.toString() + res;
                 }
                 document.getElementById("result").innerHTML = res;
                 return 0;
