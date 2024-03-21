@@ -6,6 +6,10 @@ app = Flask(__name__)
 def main():
     return render_template('main.html', static_url_path='/static')
 
+@app.route("/about", endpoint='about') # endpoint is necessary
+def decimal_binary():
+    return render_template('about.html', static_url_path='/static')
+
 @app.route("/decimal-binary", endpoint='decbi') # endpoint is necessary
 def decimal_binary():
     return render_template('decimal-binary.html', static_url_path='/static')
