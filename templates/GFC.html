@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <script>
+            // javascript
+            function greatest() {
+                let val = document.getElementById('inp').value.trim(); // value of inputs
+                if (val.length == 0) {
+                    document.getElementById("result").innerHTML = 'no input value'; 
+                    return 0;
+                }
+                val = val.split(" ");
+                let max = 0
+
+                for (let i = 0; i < val.length; i++) { // converts all values to ints and harvests max value
+                    val[i] = Math.abs(parseInt(val[i]));
+                    if (val[i] > max) {
+                        max = val[i];
+                    }
+                }
+
+                let counter = max-1;
+                while (counter >= 2) {
+                    for (let i = 0; i <= val.length; i++) {
+                        if (i == val.length) { // that means all numbers were divisible by this number
+                            document.getElementById("result").innerHTML = counter;
+                            return 0;
+                        }
+                        if (val[i] % counter != 0) { // break out of for loop for this one since it failed
+                            break;
+                        }
+                    }
+                    counter--;
+                }
+                
+                document.getElementById("result").innerHTML = 'no common factors';
+                return 0;
+            }
+        </script>
+        <link rel="stylesheet" href="index.css">
+            <!-- links css so I can use it -->
+        <style>
+            body {
+                background-color: #d8f7d5;
+            }
+            nav {
+                background-color: #599664;
+            }
+            nav ul {
+                list-style-type: none;
+                /* removes the bullet points from the list */
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                /* hides elements that go past the boundaries of the list */
+            }
+            nav li {
+                float: left;
+                /* aligns items to the left */
+            }
+            nav li a {
+                display: block;
+                /* makes anchor tags a block so width and height can be edited */
+                color: white;
+                text-align: center;
+                /* centers the text within the anchor tags */
+                padding: 14px 16px;
+                text-decoration: none;
+            }
+            .current {
+                color: #d4d4d4
+            }
+            .other {
+                transition: transform 0.2s ease;
+            }
+            .other:hover {
+                transform: scale(1.1);
+                color: #c3e6c6;
+            }
+            .button {
+                background-color: #bedfc1;
+                border-color:#888888;
+                border-radius: 0.5px;
+            }
+            .button:hover {
+                background-color: #9fc4a2;
+                border-color:#636363;
+            }
+            .main-container {
+            /* centers container */
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            }
+            .result-box {
+                /* centers container */
+                display: flex;
+                justify-content: center;
+            }
+            .res-text {
+                margin: 2.5px;
+            }
+            .box {
+                display: flex;
+                flex-direction: column;
+                text-align: center;
+                align-items: center;
+                padding: 15px 15px; /* top-bottom right-left */
+            }
+        </style>
+        <nav>
+            <ul>
+                <!-- tabs for nav bar -->
+                <li><a class="other" href="http://127.0.0.1:5000">Home</a></li>
+                <li><a class="other" href="/decimal-binary">Binary/Decimal Calculator</a></li>
+                <li><a class="other" href="/IEEE">IEEE 32b Format</a></li>
+                <li><a class="current" href="/GFC">Greatest Common Factor</a></li>
+            </ul>
+        </nav>
+        <div class = 'main_container'>
+            <div class = 'box'>
+                <h1>Greatest Common Factor</h1>
+                <div class = 'inputs'>
+                    <label for="dec">list all numbers (separated by space):</label>
+                    <input type="text" id="inp" name="inp">
+                    <button onclick="greatest()" class="button">calculate</button><br>
+                </div>
+            </div>
+            <div class = 'result-box'>
+                <p class="res-text">greatest common factor: </p>
+                <p class='res-text' id="result"></p>
+            </div>
+        </div>
+    </body>
+</html>

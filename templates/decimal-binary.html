@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <script>
+            // javascript
+            function calculateToBinary() {
+                let dec = document.getElementById('dec').value; // value of decimal input
+                if (dec.length == 0) {
+                    document.getElementById("result").innerHTML = 'no input value'; 
+                    return 0;
+                }
+                dec = parseInt(dec);
+                let res = '';
+                let x = 0;
+                while (dec != 0) {
+                    x = dec % 2;
+                    dec = Math.floor(dec/2);
+                    res = x.toString() + res;
+                    if (res.replaceAll(' ','').length % 4 == 0) { // add spaces every 4 numbers
+                        res = ' ' + res;
+                    }
+                }
+                while (res.replaceAll(' ','').length % 4 != 0) { // makes sure it has 4x bits
+                    res = '0' + res;
+                }
+                document.getElementById("result").innerHTML = res;
+                return 0;
+            }
+            function calculateToDecimal() {
+                let bin = document.getElementById('bin').value; // value of binary input
+                if (bin.length == 0) {
+                    document.getElementById("result").innerHTML = 'no input value'; 
+                    return 0;
+                }
+                bin = bin.replaceAll(' ','');
+                let res = 0;
+                for (let i = bin.length - 1, j = 0; i >= 0; i--, j++) {
+                    let x = parseInt(bin.charAt(i));
+                    res += x * Math.pow(2, j);
+                }
+                document.getElementById("result").innerHTML = res;
+                return 0;
+            }
+        </script>
+        <link rel="stylesheet" href="index.css">
+        <style>
+            /* CSS */
+            body {
+                background-color: #d8f7d5;
+            }
+            nav {
+                background-color: #599664;
+            }
+            nav ul {
+                list-style-type: none;
+                /* removes the bullet points from the list */
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                /* hides elements that go past the boundaries of the list */
+            }
+            nav li {
+                float: left;
+                /* aligns items to the left */
+            }
+            nav li a {
+                display: block;
+                /* makes anchor tags a block so width and height can be edited */
+                color: white;
+                text-align: center;
+                /* centers the text within the anchor tags */
+                padding: 14px 16px;
+                text-decoration: none;
+            }
+            .current {
+                color: #d4d4d4
+            }
+            .other {
+                transition: transform 0.2s ease;
+            }
+            .other:hover {
+                transform: scale(1.1);
+                color: #c3e6c6;
+            }
+            .button {
+                background-color: #bedfc1;
+                border-color:#888888;
+                border-radius: 0.5px;
+            }
+            .button:hover {
+                background-color: #9fc4a2;
+                border-color:#636363;
+            }
+            .main-container {
+            /* centers container */
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            }
+            .result-box {
+                /* centers container */
+                display: flex;
+                justify-content: center;
+            }
+            .res-text {
+                margin: 2.5px;
+            }
+            .box {
+                display: flex;
+                flex-direction: column;
+                text-align: center;
+                align-items: center;
+                padding: 15px 15px; /* top-bottom right-left */
+            }
+        </style>
+        <!-- HTML -->
+        <nav>
+            <ul>
+                <!-- tabs for the nav bar -->
+                <li><a class="other" href="http://127.0.0.1:5000">Home</a></li>
+                <li><a class="current" href="">Binary/Decimal Calculator</a></li>
+                <li><a class="other" href="/IEEE">IEEE 32b Format</a></li>
+                <li><a class="other" href="/GFC">Greatest Common Factor</a></li>
+            </ul>
+        </nav>
+        <div class = 'main_container'>
+            <div class = 'box'>
+                <h1>Decimal/Binary Calculator</h1>
+                <div class = 'inputs'>
+                    <label for="dec">decimal to binary:</label>
+                    <input type="text" id="dec" name="dec">
+                    <button onclick="calculateToBinary()" class="button">calculate</button><br><br>
+                    <label for="bin">binary to decimal:</label>
+                    <input type="text" id="bin" name="bin">
+                    <button onclick="calculateToDecimal()" class="button">calculate</button>
+                </div>
+            </div>
+            <div class = 'result-box'>
+                <p class="res-text">result: </p>
+                <p class='res-text' id="result"></p>
+            </div>
+        </div>
+    </body>
+</html>
