@@ -30,44 +30,20 @@
                 }
                 for (let i = 0; i < expression.length; i++) { // turns numbers into numbers
                     if (operations.includes(val[i])) {
-                        val[i] = val[i]
+                        expression[i] = expression[i]
                     } else {
-                        val[i] = parseFloat(val[i]);
+                        expression[i] = parseFloat(expression[i]);
                     }
                 }
                 if (expression[expression.length-1] == undefined) { // for a bug
                     let x = expression.pop();
                 } // now officially, expression can be analyzed
-                
+
                 expression.pop();
                 expression.shift();
                 let z = evaluate(expression);
-                document.getElementById("result").innerHTML = z; 
+                document.getElementById("result").innerHTML = expression[0]; // ??????
                 return 0; 
-
-                // while (expression.includes('(')) {
-                //     let starting = 0;
-                //     let ending = 0;
-                //     for (let i = expression.length-1; i >= 0; i--) { // picks up innermost parentheses
-                //         if (val[i] == '(') {
-                //             starting = i;
-                //             break;
-                //         }
-                //     }
-                //     for (let j = starting; j < expression.length; j++) {
-                //         if (val[j] == ')') {
-                //             ending = j;
-                //             break;
-                //         }
-                //     }
-                //     let x = expression.splice(starting,ending-starting);
-                //     document.getElementById("result").innerHTML = x; 
-                //     return 0; 
-                //     //expression[starting] = evaluate(x);
-                // } // end while loop, all parentheses are done
-
-                // document.getElementById("result").innerHTML = expression; 
-                // return 0; 
             }
             function evaluate(inner) { // returns evaluated number in parentheses
                 if (inner.includes('^')) {
@@ -211,7 +187,7 @@
                     <input onkeypress="handleKeyPress(event, 'mathify')" type="text" id="inp" name="inp">
                     <button onclick="mathify()" class="button">calculate</button><br>
                 </div>
-                <p>supports + - * / ^ ()</p>
+                <p>supports + - * / ^</p>
             </div>
             <div class = 'result-box'>
                 <p class="res-text">result: </p>
