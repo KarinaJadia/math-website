@@ -7,8 +7,12 @@ def main():
     return render_template('main.html', static_url_path='/static')
 
 @app.route("/about", endpoint='about') # endpoint is necessary
-def decimal_binary():
+def about():
     return render_template('about.html', static_url_path='/static')
+
+@app.route("/basic-math", endpoint='basic-math') # endpoint is necessary
+def basic_math():
+    return render_template('basic-math.html', static_url_path='/static')
 
 @app.route("/decimal-binary", endpoint='decbi') # endpoint is necessary
 def decimal_binary():

@@ -3,59 +3,37 @@
     <body>
         <script>
             // javascript
-            function calculateToBinary() {
-                let dec = document.getElementById('dec').value; // value of decimal input
-                if (dec.length == 0) {
+            function greatest() {
+                let val = document.getElementById('inp').value.trim(); // value of inputs
+                if (val.length == 0) {
                     document.getElementById("result").innerHTML = 'no input value'; 
                     return 0;
                 }
-                dec = parseInt(dec);
+                val = val.split(" ");
+                let max = 0
 
-                let twoscomp = 2; // handles negative numbers
-                let signedbit = 0;
-                if (dec < 0) {
-                    dec = Math.abs(dec);
-                    while (twoscomp < dec) {
-                        twoscomp = twoscomp * twoscomp;
-                    }
-                    if (dec == twoscomp) { // specifically for 2^x values since they work special
-                        dec = dec;
-                        signedbit++;
-                    } else if (dec + 1 == twoscomp) { // for 4 bits that are all 1 unsigned (like 15 = 1111)
-                        dec = twoscomp * twoscomp - dec;
-                    } else {
-                        dec = twoscomp - dec // formula for the number to calculate to get two's complement
+                for (let i = 0; i < val.length; i++) { // converts all values to ints and harvests max value
+                    val[i] = Math.abs(parseInt(val[i]));
+                    if (val[i] > max) {
+                        max = val[i];
                     }
                 }
-                let res = '';
-                let x = 0;
-                while (dec != 0) { // actual binary calculations
-                    x = dec % 2;
-                    dec = Math.floor(dec/2);
-                    res = x.toString() + res;
-                    if (res.replaceAll(' ','').length % 4 == 0) { // add spaces every 4 numbers
-                        res = ' ' + res;
+
+                let counter = max-1;
+                while (counter >= 2) {
+                    for (let i = 0; i <= val.length; i++) {
+                        if (i == val.length) { // that means all numbers were divisible by this number
+                            document.getElementById("result").innerHTML = counter;
+                            return 0;
+                        }
+                        if (val[i] % counter != 0) { // break out of for loop for this one since it failed
+                            break;
+                        }
                     }
+                    counter--;
                 }
-                while (res.replaceAll(' ','').length % 4 != 0) { // makes sure it has 4x bits
-                    res = signedbit.toString() + res;
-                }
-                document.getElementById("result").innerHTML = res;
-                return 0;
-            }
-            function calculateToDecimal() {
-                let bin = document.getElementById('bin').value; // value of binary input
-                if (bin.length == 0) {
-                    document.getElementById("result").innerHTML = 'no input value'; 
-                    return 0;
-                }
-                bin = bin.replaceAll(' ','');
-                let res = 0;
-                for (let i = bin.length - 1, j = 0; i >= 0; i--, j++) {
-                    let x = parseInt(bin.charAt(i));
-                    res += x * Math.pow(2, j);
-                }
-                document.getElementById("result").innerHTML = res;
+                
+                document.getElementById("result").innerHTML = 'no common factors';
                 return 0;
             }
             function handleKeyPress(event, functionName) {
@@ -66,8 +44,8 @@
             }
         </script>
         <link rel="stylesheet" href="index.css">
+            <!-- links css so I can use it -->
         <style>
-            /* CSS */
             body {
                 background-color: #d8f7d5;
             }
@@ -132,31 +110,27 @@
                 padding: 15px 15px; /* top-bottom right-left */
             }
         </style>
-        <!-- HTML -->
         <nav>
             <ul>
-                <!-- tabs for the nav bar -->
+                <!-- tabs for nav bar -->
                 <li><a class="other" href="http://127.0.0.1:5000">Home</a></li>
                 <li><a class="other" href="/about">About Me</a></li>
-                <li><a class="other" href="/basic-math">Basic Math</a></li>
-                <li><a class="current" href="">Binary/Decimal Calculator</a></li>
+                <li><a class="current" href="/basic-math">Basic Math</a></li>
+                <li><a class="other" href="/decimal-binary">Binary/Decimal Calculator</a></li>
                 <li><a class="other" href="/GFC">Greatest Common Factor</a></li>
             </ul>
         </nav>
         <div class = 'main_container'>
             <div class = 'box'>
-                <h1>Decimal/Binary Calculator</h1>
+                <h1>Greatest Common Factor</h1>
                 <div class = 'inputs'>
-                    <label for="dec">decimal to binary:</label>
-                    <input onkeypress="handleKeyPress(event, 'calculateToBinary')" type="text" id="dec" name="dec">
-                    <button onclick="calculateToBinary()" class="button">calculate</button><br><br>
-                    <label for="bin">binary to decimal:</label>
-                    <input onkeypress="handleKeyPress(event, 'calculateToDecimal')" type="text" id="bin" name="bin">
-                    <button onclick="calculateToDecimal()" class="button">calculate</button>
+                    <label for="dec">list all numbers (separated by space):</label>
+                    <input onkeypress="handleKeyPress(event, 'greatest')" type="text" id="inp" name="inp">
+                    <button onclick="greatest()" class="button">calculate</button><br>
                 </div>
             </div>
             <div class = 'result-box'>
-                <p class="res-text">result: </p>
+                <p class="res-text">greatest common factor: </p>
                 <p class='res-text' id="result"></p>
             </div>
         </div>
