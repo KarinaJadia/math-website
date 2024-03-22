@@ -4,103 +4,105 @@
         <script>
             // javascript
             function mathify() {
-                let val = document.getElementById('inp').value; // value of inputs
+                let val = document.getElementById('inp').value.trim();
                 if (val.length == 0) {
                     document.getElementById("result").innerHTML = 'no input value'; 
                     return 0;
                 }
-                val = '(' + val + ')'; // for a bug
-                const operations = ["(", ")", "+", "-", "*", "/", "^"];
-                let expression = [];
-                let counter = 0;
-                for (let i = 0; i < val.length; i++) { // parses input into analyzable list
-                    if (operations.includes(val[i])) {
-                        if (counter != 0) {
-                            counter++;
-                        }
-                        expression[counter] = val[i];
-                        counter++;
-                        i++;
-                    }
-                    if (expression[counter] == undefined) {
-                        expression[counter] = val[i];
-                    } else {
-                        expression[counter] = expression[counter] + val[i];
-                    }
-                }
-                for (let i = 0; i < expression.length; i++) { // turns numbers into numbers
-                    if (operations.includes(val[i])) {
-                        expression[i] = expression[i]
-                    } else {
-                        expression[i] = parseFloat(expression[i]);
-                    }
-                }
-                if (expression[expression.length-1] == undefined) { // for a bug
-                    let x = expression.pop();
-                } // now officially, expression can be analyzed
 
-                expression.pop();
-                expression.shift();
+                const operations = ["+", "-", "*", "/", "^"];
+                let expression = [];
+                let currentNumber = '';
+
+                for (let i = 0; i < val.length; i++) { // parses into analyzable list
+                    if (operations.includes(val[i]) || val[i] === '(' || val[i] === ')') {
+                        if (currentNumber !== '') {
+                            expression.push(parseFloat(currentNumber));
+                            currentNumber = '';
+                        }
+                        expression.push(val[i]);
+                    } else {
+                        currentNumber += val[i];
+                    }
+                }
+                if (currentNumber !== '') {
+                    expression.push(parseFloat(currentNumber));
+                }
+
                 let z = evaluate(expression);
-                document.getElementById("result").innerHTML = expression[0]; // ??????
-                return 0; 
+                document.getElementById("result").innerHTML = z;
             }
-            function evaluate(inner) { // returns evaluated number in parentheses
-                if (inner.includes('^')) {
-                    while (inner.includes('^')) {
-                        let i = 0;
-                        while (i < inner.length) {
-                            if (inner[i] == '^') {
-                                break;
-                            }
-                            i++;
+
+            function evaluate(inner) {
+                const precedence = {
+                    '^': 3,
+                    '*': 2,
+                    '/': 2,
+                    '+': 1,
+                    '-': 1
+                };
+
+                let outputQueue = [];
+                let operatorStack = [];
+
+                for (let i = 0; i < inner.length; i++) {
+                    if (typeof inner[i] === 'number') {
+                        outputQueue.push(inner[i]);
+                    } else if (inner[i] === '(') {
+                        operatorStack.push(inner[i]);
+                    } else if (inner[i] === ')') {
+                        while (operatorStack.length > 0 && operatorStack[operatorStack.length - 1] !== '(') {
+                            outputQueue.push(operatorStack.pop());
                         }
-                        inner[i-1] = Math.pow(inner[i-1], inner[i+1]);
-                        let x = inner.splice(i, 2);
+                        operatorStack.pop(); // Discard '('
+                    } else {
+                        while (operatorStack.length > 0 && precedence[operatorStack[operatorStack.length - 1]] >= precedence[inner[i]]) {
+                            outputQueue.push(operatorStack.pop());
+                        }
+                        operatorStack.push(inner[i]);
                     }
-                } // end exponent
-                if (inner.includes('*') || inner.includes('/')) {
-                    while (inner.includes('*') || inner.includes('/')) {
-                        let i = 0;
-                        while (i < inner.length) {
-                            if (inner[i] == '*' || inner[i] == '/') {
+                }
+
+                while (operatorStack.length > 0) {
+                    outputQueue.push(operatorStack.pop());
+                }
+
+                let resultStack = [];
+                for (let i = 0; i < outputQueue.length; i++) {
+                    if (typeof outputQueue[i] === 'number') {
+                        resultStack.push(outputQueue[i]);
+                    } else {
+                        let b = resultStack.pop();
+                        let a = resultStack.pop();
+                        switch (outputQueue[i]) {
+                            case '+':
+                                resultStack.push(a + b);
                                 break;
-                            }
-                            i++;
-                        }
-                        if (inner[i] == '*') {
-                            inner[i-1] = inner[i-1] * inner[i+1];
-                        } else {
-                            inner[i-1] = inner[i-1] / inner[i+1];
-                        }
-                        let x = inner.splice(i, 2);
-                    }
-                } // end multiplication and division
-                if (inner.includes('+') || inner.includes('-')) {
-                    while (inner.includes('+') || inner.includes('-')) {
-                        let i = 0;
-                        while (i < inner.length) {
-                            if (inner[i] == '+' || inner[i] == '-') {
+                            case '-':
+                                resultStack.push(a - b);
                                 break;
-                            }
-                            i++;
+                            case '*':
+                                resultStack.push(a * b);
+                                break;
+                            case '/':
+                                resultStack.push(a / b);
+                                break;
+                            case '^':
+                                resultStack.push(Math.pow(a, b));
+                                break;
                         }
-                        if (inner[i] == '+') {
-                            inner[i-1] = parseFloat(inner[i-1]) + parseFloat(inner[i+1]);
-                        } else {
-                            inner[i-1] = parseFloat(inner[i-1]) - parseFloat(inner[i+1]);
-                        }
-                        let x = inner.splice(i, 2);
                     }
-                } // end addition and subtraction
-                return parseFloat(inner[1]);
+                }
+                return resultStack[0];
             }
+
             function handleKeyPress(event, functionName) {
                 if (event.key === "Enter") {
                     window[functionName](); 
                     return 0;
                 }
             }
+
         </script>
         <link rel="stylesheet" href="index.css">
             <!-- links css so I can use it -->
