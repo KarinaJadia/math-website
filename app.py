@@ -21,6 +21,10 @@ def decimal_binary():
 @app.route("/GFC", endpoint='GFC')
 def GFC():
     return render_template('GFC.html', static_url_path='/static')
+
+@app.route("/tracker", endpoint='GFC')
+def GFC():
+    return render_template('tracker.html', static_url_path='/static')
     
 if __name__ == '__main__':
     app.run()
